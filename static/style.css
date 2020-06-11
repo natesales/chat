@@ -31,9 +31,8 @@ body {
 .control-bar-button {
     background-color: black;
     color: white;
-    padding: 12px 20px;
     margin: 8px 0;
-    padding-top: 14px;
+    padding: 14px 20px 12px;
     display: inline-block;
     border: 1px solid #ccc;
     box-sizing: border-box;
