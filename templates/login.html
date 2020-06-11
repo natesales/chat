@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Chat</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="//stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+
+<div class="everything">
+    <div class="control-bar-login">
+        <form class="control-bar-form-login">
+            <input type="text" class="message" id="room_id" autocomplete="off" placeholder="Room ID" autofocus />
+            <input type="submit" hidden />
+        </form>
+
+        <i style="color: lightGreen; padding-bottom: 2%" class="control-bar-button fa fa-lock" onclick='clearMessages()' title='Join Room'></i>
+    </div>
+</div>
+
+<div id="typing"></div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+<script src="/static/login.js"></script>
+
+</body>
+</html>
+
+

@@ -1,19 +1,33 @@
 import os
-from flask import Flask, render_template
-from flask_socketio import SocketIO
+from flask import Flask, render_template, request, session, redirect
+from flask_socketio import SocketIO, join_room, leave_room
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(64)
 socketio = SocketIO(app, cors_allowed_origins = '*')
 
 @app.route("/")
-def sessions():
+def login():
+    return render_template("login.html")
+
+@app.route("/chat/<room_id>")
+def sessions(room_id):
     return render_template("app.html")
+
+@socketio.on("join")
+def join(data):
+    print(data['room_id'])
+    join_room(data['room_id'])
+    socketio.emit("return-join", room=data['room_id'])
+
+@socketio.on("join-room")
+def joinaroom(data):
+    join_room(data['room'])
 
 @socketio.on("message")
 def message(json):
     print("Received message: " + str(json))
-    socketio.emit("message", json)
+    socketio.emit("message", json, room=json['room'])
 
 @socketio.on("typing")
 def typing(json):
@@ -29,5 +43,5 @@ def bomb(username):
     socketio.emit("bomb", username)
 
 if __name__ == "__main__":
-    socketio.run(app, host="", port=7000, debug=True)
+    socketio.run(app, host="127.0.0.1", port=7000, debug=True)
 

@@ -191,7 +191,7 @@ const nouns = [
 
 let username = adjectives[Math.floor(adjectives.length * Math.random())] + nouns[Math.floor(nouns.length * Math.random())]
 // let socket = io.connect("https://chat.natesales.net");
-let socket = io.connect("http://localhost:7000");
+let socket = io.connect('http://127.0.0.1:7000');
 
 $(window).on('beforeunload', function(){
     socket.close();
@@ -202,9 +202,17 @@ function sanitize(text) {
 }
 
 socket.on("connect", function () {
+    const room_id = window.location.href.split("chat/")[1];
+    console.log(room_id);
+
+    socket.emit("join-room", {
+        'room': room_id,
+    });
+
     socket.emit("message", {
         username: username,
-        message: " joined the chat."
+        message: " joined the chat.",
+        'room': room_id
     });
 
     $("form").on("submit", function (e) {
@@ -233,7 +241,8 @@ socket.on("connect", function () {
                 if (message !== "" && message !== " ") {
                     socket.emit("message", {
                         username: username,
-                        message: message
+                        message: message,
+                        'room': room_id,
                     });
                 }
             }
