@@ -255,7 +255,7 @@ socket.on("connect", function () {
 
 socket.on("message", function (msg) {
     if (typeof msg.username !== 'undefined') {
-        $('#holder').append("<div class=" + sanitize(msg.username) + "><i>" + sanitize(msg.username) + ": </i> " + sanitize(msg.message) + "</div>");
+        $('#holder').append("<div class=\"" + sanitize(msg.username) + " message" + "\"><i>" + sanitize(msg.username) + ": </i> " + sanitize(msg.message) + "</div>");
         $('#holder').scrollTop($('#holder')[0].scrollHeight);
     }
 })

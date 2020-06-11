@@ -69,3 +69,10 @@ input[type=text] {
     margin-left: 2px;
 }
 
+.message {
+    margin: 5px;
+}
+
+#welcome {
+    margin: 5px;
+}
