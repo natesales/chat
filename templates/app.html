@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Chat</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="//stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+
+<div class="everything">
+    <div id="holder">Welcome! To change your nickname, type "/nick NICKNAME" where NICKNAME is your desired nickname.</div>
+    <div class="control-bar">
+        <form class="control-bar-form">
+        <input type="text" class="message" id="message" autocomplete="off" oninput="sendTyping()" placeholder="Messages" autofocus />
+        <input type="submit" hidden />
+        </form>
+
+        <i style="color: lightGreen" class="control-bar-button fa fa-lock"></i>
+        <i style="color: lightGreen" class="control-bar-button fa fa-power-off" onclick='clearMessages()' title='Clear Messages'"></i>
+    </div>
+</div>
+
+<div id="typing"></div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+<script src="/static/script.js"></script>
+
+</body>
+</html>
+
+

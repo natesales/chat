@@ -1,0 +1,57 @@
+html {
+    font-family: 'Fira Mono', Consolas, Menlo, Monaco, 'Courier New', Courier, monospace;
+}
+
+body {
+    background-color: black;
+    color: white;
+}
+
+#holder {
+    height: 88vh;
+    text-align: left;
+    border: 1px solid white;
+    overflow-y: scroll;
+    overflow-x:hidden;
+    padding-left: 0.5%;
+    padding-top: 0.4%;
+}
+
+.control-bar {
+    margin: auto;
+    display: flex;
+    justify-content: center;
+}
+
+.control-bar-form {
+    margin: auto;
+    width: 100%;
+}
+
+.control-bar-button {
+    background-color: black;
+    color: white;
+    padding: 12px 20px;
+    margin: 8px 0;
+    padding-top: 14px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+input[type=text] {
+    background-color: black;
+    color: white;
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+#typing {
+    margin-top: 5px;
+    margin-left: 2px;
+}
+
