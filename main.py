@@ -32,15 +32,15 @@ def message(json):
 @socketio.on("typing")
 def typing(json):
     print("Received typing: " + str(json))
-    socketio.emit("typing", json)
+    socketio.emit("typing", json, room=json['room'])
 
 @socketio.on("connect")
 def connect():
     socketio.emit("server_message", {"message": "User joined."})
 
 @socketio.on("bomb")
-def bomb(username):
-    socketio.emit("bomb", username)
+def bomb(json):
+    socketio.emit("bomb", json, room=json['room'])
 
 if __name__ == "__main__":
     socketio.run(app, host="127.0.0.1", port=7000, debug=True)

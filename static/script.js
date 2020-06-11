@@ -193,6 +193,8 @@ let username = adjectives[Math.floor(adjectives.length * Math.random())] + nouns
 // let socket = io.connect("https://chat.natesales.net");
 let socket = io.connect('http://127.0.0.1:7000');
 
+const room_id = window.location.href.split("chat/")[1];
+
 $(window).on('beforeunload', function(){
     socket.close();
 });
@@ -202,8 +204,6 @@ function sanitize(text) {
 }
 
 socket.on("connect", function () {
-    const room_id = window.location.href.split("chat/")[1];
-    console.log(room_id);
 
     socket.emit("join-room", {
         'room': room_id,
@@ -223,14 +223,16 @@ socket.on("connect", function () {
             case "/nick":
                 socket.emit("message", {
                     username: username,
-                    message: " is now known as " + message.split(" ")[1]
+                    message: " is now known as " + message.split(" ")[1],
+                    'room': room_id,
                 });
                 username = message.split(" ")[1];
                 break;
             case "/bomb":
                 socket.emit("bomb", {
                     username: username,
-                    message: "bomb"
+                    message: "bomb",
+                    'room': room_id,
                 });
                 let toDel = document.getElementsByClassName(sanitize(username));
                 while(toDel[0]) {
@@ -249,7 +251,7 @@ socket.on("connect", function () {
 
         document.getElementById("message").value = "";
     });
-})
+});
 
 socket.on("message", function (msg) {
     if (typeof msg.username !== 'undefined') {
@@ -272,7 +274,7 @@ function clearMessages() {
 }
 
 function sendTyping() {
-    socket.emit("typing", {username: username});
+    socket.emit("typing", {username: username, 'room': room_id});
 }
 
 window.setInterval(function() {
