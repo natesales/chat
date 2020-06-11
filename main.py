@@ -14,12 +14,6 @@ def login():
 def sessions(room_id):
     return render_template("app.html")
 
-@socketio.on("join")
-def join(data):
-    print(data['room_id'])
-    join_room(data['room_id'])
-    socketio.emit("return-join", room=data['room_id'])
-
 @socketio.on("join-room")
 def joinaroom(data):
     join_room(data['room'])
@@ -44,4 +38,3 @@ def bomb(json):
 
 if __name__ == "__main__":
     socketio.run(app, host="127.0.0.1", port=7000, debug=True)
-

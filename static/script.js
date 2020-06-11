@@ -269,8 +269,25 @@ socket.on("bomb", function (bomb) {
     }
 })
 
-function clearMessages() {
-    document.getElementById("holder").innerHTML = 'Welcome! To change your nickname, type "/nick NICKNAME" where NICKNAME is your desired nickname.'
+function showHelp() {
+    document.getElementById("holder").innerHTML += `<br><br>
+    Welcome! To change your nickname, type "/nick NICKNAME" where NICKNAME is your desired nickname.
+    <br>
+    <table style="width:50%">
+      <tr>
+        <th>Command</th> 
+        <th>Description</th>
+      </tr>
+      <tr>
+        <td>/nick NICKNAME</td>
+        <td>Change your nick to NICKNAME</td>
+      </tr>
+      <tr>
+        <td>/bomb</td>
+        <td>Clear your messages for everyone</td>
+      </tr>
+    </table>
+    `
 }
 
 function sendTyping() {
@@ -284,5 +301,3 @@ window.setInterval(function() {
 socket.on("typing", function (data) {
     document.getElementById("typing").innerText = sanitize(data.username) + " is typing."
 })
-
-
