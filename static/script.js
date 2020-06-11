@@ -270,9 +270,7 @@ socket.on("bomb", function (bomb) {
 })
 
 function showHelp() {
-    document.getElementById("holder").innerHTML += `<br><br>
-    Welcome! To change your nickname, type "/nick NICKNAME" where NICKNAME is your desired nickname.
-    <br>
+    document.getElementById("holder").innerHTML += `<br>
     <table style="width:50%">
       <tr>
         <th>Command</th> 
