@@ -1,0 +1,17 @@
+<html lang="en">
+
+<script src="https://unpkg.com/peerjs@1.2.0/dist/peerjs.min.js"></script>
+<script src="src/cryptico.js"></script>
+<script src="src/cryptography.js"></script>
+<script src="src/transport.js"></script>
+
+<script>
+    let start = new Date().getSeconds();
+    let key = new KeyPair();
+    console.log(new Date().getSeconds() - start + " seconds");
+
+    console.log(key.id);
+
+</script>
+
+</html>

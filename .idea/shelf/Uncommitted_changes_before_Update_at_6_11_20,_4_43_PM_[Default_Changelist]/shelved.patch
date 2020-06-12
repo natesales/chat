@@ -1,0 +1,89 @@
+Index: static/script.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>// script.js\n\nconst adjectives = [\n    \"Defiant\",\n    \"Homeless\",\n    \"Adorable\",\n    \"Delightful\",\n    \"Homely\",\n    \"Quaint\",\n    \"Adventurous\",\n    \"Depressed\",\n    \"Horrible\",\n    \"Aggressive\",\n    \"Determined\",\n    \"Hungry\",\n    \"Real\",\n    \"Agreeable\",\n    \"Different\",\n    \"Hurt\",\n    \"Relieved\",\n    \"Alert\",\n    \"Difficult\",\n    \"Repulsive\",\n    \"Alive\",\n    \"Disgusted\",\n    \"Ill\",\n    \"Rich\",\n    \"Amused\",\n    \"Distinct\",\n    \"Important\",\n    \"Angry\",\n    \"Disturbed\",\n    \"Impossible\",\n    \"Scary\",\n    \"Annoyed\",\n    \"Dizzy\",\n    \"Inexpensive\",\n    \"Selfish\",\n    \"Annoying\",\n    \"Doubtful\",\n    \"Innocent\",\n    \"Shiny\",\n    \"Anxious\",\n    \"Drab\",\n    \"Inquisitive\",\n    \"Shy\",\n    \"Arrogant\",\n    \"Dull\",\n    \"Itchy\",\n    \"Silly\",\n    \"Ashamed\",\n    \"Sleepy\",\n    \"Attractive\",\n    \"Eager\",\n    \"Jealous\",\n    \"Better\",\n    \"Encouraging\",\n    \"Stormy\",\n    \"Bewildered\",\n    \"Energetic\",\n    \"Lazy\",\n    \"Strange\",\n    \"Black\",\n    \"Enthusiastic\",\n    \"Light\",\n    \"Stupid\",\n    \"Bloody\",\n    \"Envious\",\n    \"Lively\",\n    \"Successful\",\n    \"Blue\",\n    \"Nervous\",\n    \"Wild\",\n    \"Curious\",\n    \"Poor\",\n    \"Witty\",\n    \"Cute\",\n    \"Handsome\",\n    \"Powerful\",\n    \"Worrisome\",\n    \"Happy\",\n    \"Precious\",\n    \"Worried\",\n    \"Dangerous\",\n    \"Healthy\",\n    \"Prickly\",\n    \"Wrong\",\n    \"Dark\",\n    \"Helpful\",\n    \"Proud\",\n    \"Helpless\",\n    \"Putrid\",\n    \"Zany\",\n    \"Defeated\",\n    \"Hilarious\",\n    \"Puzzled\",\n    \"Zealous\"\n];\n\nconst nouns = [\n    \"Frog\",\n    \"Newt\",\n    \"Tadpole\",\n    \"Toad\",\n    \"Scorpion\",\n    \"Spider\",\n    \"Tarantula\",\n    \"Albatross\",\n    \"Biddy\",\n    \"Blackbird\",\n    \"Canary\",\n    \"Crow\",\n    \"Cuckoo\",\n    \"Dove\",\n    \"Pigeon\",\n    \"Duck\",\n    \"Eagle\",\n    \"Falcon\",\n    \"Finch\",\n    \"Flamingo\",\n    \"Goose\",\n    \"Gull\",\n    \"Hawk\",\n    \"Jackdaw\",\n    \"Jay\",\n    \"Kookaburra\",\n    \"Mallard\",\n    \"Ostrich\",\n    \"Owl\",\n    \"Parakeet\",\n    \"Parrot\",\n    \"Peacock\",\n    \"Pelican\",\n    \"Penguin\",\n    \"Pheasant\",\n    \"Piranha\",\n    \"Raven\",\n    \"Robin\",\n    \"Rooster\",\n    \"Sparrow\",\n    \"Stork\",\n    \"Swallow\",\n    \"Turkey\",\n    \"Vulture\",\n    \"Woodpecker\",\n    \"Peacock\",\n    \"Silkworm\",\n    \"Crab\",\n    \"Eel\",\n    \"Goldfish\",\n    \"Halibut\",\n    \"Jellyfish\",\n    \"Lobster\",\n    \"Perch\",\n    \"Salmon\",\n    \"Scallop\",\n    \"Shark\",\n    \"Shell\",\n    \"Shrimp\",\n    \"Trout\",\n    \"Ant\",\n    \"Aphid\",\n    \"Bee\",\n    \"Beetle\",\n    \"Bumblebee\",\n    \"Caterpillar\",\n    \"Cockroach\",\n    \"Dragonfly\",\n    \"Flea\",\n    \"Fly\",\n    \"Gadfly\",\n    \"Grasshopper\",\n    \"Larva\",\n    \"Midge\",\n    \"Millipede\",\n    \"Moth\",\n    \"Wasp\",\n    \"Anteater\",\n    \"Antelope\",\n    \"Armadillo\",\n    \"Badger\",\n    \"Bat\",\n    \"Bear\",\n    \"Beaver\",\n    \"Camel\",\n    \"Chimpanzee\",\n    \"Dachshund\",\n    \"Dolphin\",\n    \"Elephant\"\n]\n\nlet username = adjectives[Math.floor(adjectives.length * Math.random())] + nouns[Math.floor(nouns.length * Math.random())]\n// let socket = io.connect(\"https://chat.natesales.net\");\nlet socket = io.connect('http://127.0.0.1:7000');\n\nconst room_id = window.location.href.split(\"chat/\")[1];\n\n$(window).on('beforeunload', function(){\n    socket.close();\n});\n\nfunction sanitize(text) {\n  return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/\"/g, '&quot;');\n}\n\nsocket.on(\"connect\", function () {\n\n    socket.emit(\"join-room\", {\n        'room': room_id,\n    });\n\n    socket.emit(\"message\", {\n        username: username,\n        message: \" joined the chat.\",\n        'room': room_id\n    });\n\n    $(\"form\").on(\"submit\", function (e) {\n        e.preventDefault()\n        const message = $(\"input.message\").val();\n\n        switch(message.split(\" \")[0]) {\n            case \"/nick\":\n                socket.emit(\"message\", {\n                    username: username,\n                    message: \" is now known as \" + message.split(\" \")[1],\n                    'room': room_id,\n                });\n                username = message.split(\" \")[1];\n                break;\n            case \"/bomb\":\n                socket.emit(\"bomb\", {\n                    username: username,\n                    message: \"bomb\",\n                    'room': room_id,\n                });\n                let toDel = document.getElementsByClassName(sanitize(username));\n                while(toDel[0]) {\n                    toDel[0].parentNode.removeChild(toDel[0]);\n                }\n            break;\n            default:\n                if (message !== \"\" && message !== \" \") {\n                    socket.emit(\"message\", {\n                        username: username,\n                        message: message,\n                        'room': room_id,\n                    });\n                }\n            }\n\n        document.getElementById(\"message\").value = \"\";\n    });\n});\n\nsocket.on(\"message\", function (msg) {\n    if (typeof msg.username !== 'undefined') {\n        $('#holder').append(\"<div class=\" + sanitize(msg.username) + \"><i>\" + sanitize(msg.username) + \": </i> \" + sanitize(msg.message) + \"</div>\");\n        $('#holder').scrollTop($('#holder')[0].scrollHeight);\n    }\n})\n\nsocket.on(\"bomb\", function (bomb) {\n    if (typeof bomb.username !== 'undefined') {\n        let toDel = document.getElementsByClassName(sanitize(bomb.username));\n        while(toDel[0]) {\n            toDel[0].parentNode.removeChild(toDel[0]);\n        }\n    }\n})\n\nfunction clearMessages() {\n    document.getElementById(\"holder\").innerHTML = 'Welcome! To change your nickname, type \"/nick NICKNAME\" where NICKNAME is your desired nickname.'\n}\n\nfunction sendTyping() {\n    socket.emit(\"typing\", {username: username, 'room': room_id});\n}\n\nwindow.setInterval(function() {\n    document.getElementById(\"typing\").innerText = \"\";\n}, 2500);\n\nsocket.on(\"typing\", function (data) {\n    document.getElementById(\"typing\").innerText = sanitize(data.username) + \" is typing.\"\n})\n\n\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- static/script.js	(revision 11ad31ae05e6626b2b20502264eb88a6886ae411)
++++ static/script.js	(date 1591918976047)
+@@ -269,8 +269,25 @@
+     }
+ })
+ 
+-function clearMessages() {
+-    document.getElementById("holder").innerHTML = 'Welcome! To change your nickname, type "/nick NICKNAME" where NICKNAME is your desired nickname.'
++function showHelp() {
++    document.getElementById("holder").innerHTML += `<br><br>
++    Welcome! To change your nickname, type "/nick NICKNAME" where NICKNAME is your desired nickname.
++    <br>
++    <table style="width:50%">
++      <tr>
++        <th>Command</th> 
++        <th>Description</th>
++      </tr>
++      <tr>
++        <td>/nick NICKNAME</td>
++        <td>Change your nick to NICKNAME</td>
++      </tr>
++      <tr>
++        <td>/bomb</td>
++        <td>Clear your messages for everyone</td>
++      </tr>
++    </table>
++    `
+ }
+ 
+ function sendTyping() {
+@@ -284,5 +301,3 @@
+ socket.on("typing", function (data) {
+     document.getElementById("typing").innerText = sanitize(data.username) + " is typing."
+ })
+-
+-
+Index: main.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import os\nfrom flask import Flask, render_template, request, session, redirect\nfrom flask_socketio import SocketIO, join_room, leave_room\n\napp = Flask(__name__)\napp.config['SECRET_KEY'] = os.urandom(64)\nsocketio = SocketIO(app, cors_allowed_origins = '*')\n\n@app.route(\"/\")\ndef login():\n    return render_template(\"login.html\")\n\n@app.route(\"/chat/<room_id>\")\ndef sessions(room_id):\n    return render_template(\"app.html\")\n\n@socketio.on(\"join\")\ndef join(data):\n    print(data['room_id'])\n    join_room(data['room_id'])\n    socketio.emit(\"return-join\", room=data['room_id'])\n\n@socketio.on(\"join-room\")\ndef joinaroom(data):\n    join_room(data['room'])\n\n@socketio.on(\"message\")\ndef message(json):\n    print(\"Received message: \" + str(json))\n    socketio.emit(\"message\", json, room=json['room'])\n\n@socketio.on(\"typing\")\ndef typing(json):\n    print(\"Received typing: \" + str(json))\n    socketio.emit(\"typing\", json, room=json['room'])\n\n@socketio.on(\"connect\")\ndef connect():\n    socketio.emit(\"server_message\", {\"message\": \"User joined.\"})\n\n@socketio.on(\"bomb\")\ndef bomb(json):\n    socketio.emit(\"bomb\", json, room=json['room'])\n\nif __name__ == \"__main__\":\n    socketio.run(app, host=\"127.0.0.1\", port=7000, debug=True)\n\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- main.py	(revision 11ad31ae05e6626b2b20502264eb88a6886ae411)
++++ main.py	(date 1591918821659)
+@@ -14,12 +14,6 @@
+ def sessions(room_id):
+     return render_template("app.html")
+ 
+-@socketio.on("join")
+-def join(data):
+-    print(data['room_id'])
+-    join_room(data['room_id'])
+-    socketio.emit("return-join", room=data['room_id'])
+-
+ @socketio.on("join-room")
+ def joinaroom(data):
+     join_room(data['room'])
+@@ -44,4 +38,3 @@
+ 
+ if __name__ == "__main__":
+     socketio.run(app, host="127.0.0.1", port=7000, debug=True)
+-
+Index: templates/app.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><!DOCTYPE html>\n<html lang=\"en\">\n\n<head>\n    <title>Chat</title>\n    <link rel=\"stylesheet\" href=\"/static/style.css\">\n    <link rel=\"stylesheet\" href=\"//stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css\">\n</head>\n<body>\n\n<div class=\"everything\">\n    <div id=\"holder\">Welcome! To change your nickname, type \"/nick NICKNAME\" where NICKNAME is your desired nickname.</div>\n    <div class=\"control-bar\">\n        <form class=\"control-bar-form\">\n        <input type=\"text\" class=\"message\" id=\"message\" autocomplete=\"off\" oninput=\"sendTyping()\" placeholder=\"Messages\" autofocus />\n        <input type=\"submit\" hidden />\n        </form>\n\n        <i style=\"color: lightGreen\" class=\"control-bar-button fa fa-lock\"></i>\n        <i style=\"color: lightGreen\" class=\"control-bar-button fa fa-power-off\" onclick='clearMessages()' title='Clear Messages'\"></i>\n    </div>\n</div>\n\n<div id=\"typing\"></div>\n\n<script src=\"//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js\"></script>\n<script src=\"//cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js\"></script>\n<script src=\"/static/script.js\"></script>\n\n</body>\n</html>\n\n\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- templates/app.html	(revision 11ad31ae05e6626b2b20502264eb88a6886ae411)
++++ templates/app.html	(date 1591918834179)
+@@ -16,8 +16,7 @@
+         <input type="submit" hidden />
+         </form>
+ 
+-        <i style="color: lightGreen" class="control-bar-button fa fa-lock"></i>
+-        <i style="color: lightGreen" class="control-bar-button fa fa-power-off" onclick='clearMessages()' title='Clear Messages'"></i>
++        <i style="color: lightGreen" class="control-bar-button fa fa-question-circle" onclick='showHelp()' title='Help'"></i>
+     </div>
+ </div>
+ 
