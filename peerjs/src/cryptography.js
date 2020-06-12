@@ -5,30 +5,30 @@
 
 const KEY_SIZE = 2048; // Key size in bits
 const DEFAULT_PASSWORD = "chat"; // Default password for RSA keys
-const PUBKEY_HASH_ALGO = "SHA-256"; // Default key hashing algorithm
 
+/**
+ * Stores a public/private RSA keypair
+ */
 class KeyPair {
     constructor() {
         this.key = cryptico.generateRSAKey(DEFAULT_PASSWORD, KEY_SIZE);
         this.public = cryptico.publicKeyString(this.key);
-        this.id = this._id();
+        this.id = SHA256(this.public);
     }
 
     /**
-     * Get hash (PUBKEY_HASH_ALGO) of public key.
-     * @private
+     * Sign {plaintext} for {peer}, returns empty string if error
+     * @param plaintext
+     * @param peer
+     * @returns {string}
      */
-    _id () {
-        // Encode the public key as UTF-8
-        const msgBuffer = new TextEncoder().encode(this.public);
+    sign(plaintext) {
+        let result = cryptico.encrypt(plaintext, this.key);
 
-        // hash the message
-        const hashBuffer = crypto.subtle.digest(PUBKEY_HASH_ALGO, msgBuffer);
-
-        // convert ArrayBuffer to Array
-        const hashArray = Array.from(new Uint8Array(hashBuffer));
-
-        // convert bytes to hex string
-        return hashArray.map(b => ('00' + b.toString(16)).slice(-2)).join('');
+        if (result.status !== "success") {
+            return result.cipher;
+        } else {
+            return "";
+        }
     }
 }
